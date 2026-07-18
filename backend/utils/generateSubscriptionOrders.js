@@ -2,6 +2,7 @@ const Subscription = require('../models/Subscription');
 const Order = require('../models/Order');
 const Product = require('../models/Product');
 const Delivery = require('../models/Delivery');
+const Notification = require('../models/Notification');
 const { isDueToday } = require('./subscriptionHelper');
 
 const generateSubscriptionOrders = async () => {
@@ -50,6 +51,12 @@ const generateSubscriptionOrders = async () => {
       scheduledDate: today,
       deliveryTime: sub.deliveryTime,
       status: 'pending',
+    });
+
+    await Notification.create({
+      user: sub.customer,
+      type: 'delivery_scheduled',
+      message: `Your ${product.name} delivery is scheduled for today.`,
     });
 
     await Product.findByIdAndUpdate(product._id, { $inc: { stock: -sub.quantity } });

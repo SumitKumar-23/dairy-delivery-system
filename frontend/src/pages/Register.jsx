@@ -25,7 +25,7 @@ const Register = () => {
     try {
       const user = await register(formData);
       toast.success('Account created!');
-      if (user.role === 'customer') navigate('/');
+      if (user.role === 'customer') navigate('/home');
       else navigate('/login');
     } catch (error) {
       toast.error(error.response?.data?.message || 'Registration failed');

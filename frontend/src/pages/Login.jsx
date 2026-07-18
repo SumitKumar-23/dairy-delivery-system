@@ -17,8 +17,7 @@ const Login = () => {
       const user = await login(email, password);
       toast.success('Welcome back!');
 
-      // Redirect based on role
-      if (user.role === 'customer') navigate('/');
+      if (user.role === 'customer') navigate('/home');
       else if (user.role === 'vendor') navigate('/vendor/dashboard');
       else if (user.role === 'delivery_agent') navigate('/agent/dashboard');
       else if (user.role === 'admin') navigate('/admin/dashboard');
@@ -30,43 +29,50 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="w-full max-w-sm bg-white p-8 rounded-xl shadow-md">
-        <h1 className="text-2xl font-bold text-blue-600 mb-1">DairyFresh</h1>
-        <p className="text-gray-500 mb-6">Login to your account</p>
+    <div className="flex min-h-screen items-center justify-center bg-[radial-gradient(circle_at_top_left,_rgba(59,130,246,0.15),_transparent_40%)] p-4">
+      <div className="relative w-full max-w-md overflow-hidden rounded-[28px] border border-white/60 bg-white/80 p-8 shadow-2xl backdrop-blur-xl">
+        <div className="absolute -right-10 -top-10 h-24 w-24 rounded-full bg-blue-100 blur-3xl" />
+        <div className="absolute -bottom-8 -left-8 h-24 w-24 rounded-full bg-sky-100 blur-3xl" />
+        <div className="relative">
+          <div className="mb-4 inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700">
+            🥛 DairyFresh
+          </div>
+          <h1 className="text-2xl font-semibold tracking-tight text-slate-800">Welcome back</h1>
+          <p className="mb-6 mt-1 text-sm text-slate-500">Login to continue your dairy delivery experience.</p>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-blue-600 text-white py-2 rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50"
-          >
-            {loading ? 'Logging in...' : 'Login'}
-          </button>
-        </form>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <input
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              className="w-full rounded-2xl border border-slate-200 bg-slate-50/80 px-4 py-3 text-sm text-slate-700 outline-none transition focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
+            />
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              className="w-full rounded-2xl border border-slate-200 bg-slate-50/80 px-4 py-3 text-sm text-slate-700 outline-none transition focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
+            />
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full rounded-2xl bg-blue-600 py-3 font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {loading ? 'Logging in...' : 'Login'}
+            </button>
+          </form>
 
-        <p className="text-sm text-gray-500 mt-4 text-center">
-          Don't have an account?{' '}
-          <Link to="/register" className="text-blue-600 font-medium">
-            Register
-          </Link>
-        </p>
+          <p className="mt-5 text-center text-sm text-slate-500">
+            Don&apos;t have an account?{' '}
+            <Link to="/register" className="font-semibold text-blue-600">
+              Register
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );

@@ -4,6 +4,7 @@ import toast from 'react-hot-toast';
 import { Trash2, Plus, Minus } from 'lucide-react';
 import axiosInstance from '../utils/axiosInstance';
 import Navbar from '../components/Navbar';
+import { useAuth } from '../context/AuthContext';
 
 const Cart = () => {
   const [cart, setCart] = useState(null);
@@ -11,6 +12,7 @@ const Cart = () => {
   const [address, setAddress] = useState({ street: '', city: '', state: '', pincode: '' });
   const [placing, setPlacing] = useState(false);
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   const fetchCart = async () => {
     setLoading(true);
@@ -32,6 +34,7 @@ const Cart = () => {
     try {
       const res = await axiosInstance.put('/cart/update', { productId, quantity });
       setCart(res.data);
+      window.dispatchEvent(new Event('cart:updated'));
     } catch (error) {
       toast.error(error.response?.data?.message || 'Update failed');
     }
@@ -42,6 +45,7 @@ const Cart = () => {
       const res = await axiosInstance.delete(`/cart/remove/${productId}`);
       setCart(res.data);
       toast.success('Item removed');
+      window.dispatchEvent(new Event('cart:updated'));
     } catch (error) {
       toast.error('Failed to remove item');
     }
@@ -50,6 +54,20 @@ const Cart = () => {
   const subtotal = cart?.items?.reduce((sum, item) => sum + item.product.price * item.quantity, 0) || 0;
   const deliveryCharge = subtotal > 200 || subtotal === 0 ? 0 : 20;
   const total = subtotal + deliveryCharge;
+
+  const loadRazorpayScript = () =>
+    new Promise((resolve, reject) => {
+      if (window.Razorpay) {
+        resolve(true);
+        return;
+      }
+
+      const script = document.createElement('script');
+      script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+      script.onload = () => resolve(true);
+      script.onerror = () => reject(new Error('Unable to load Razorpay'));
+      document.body.appendChild(script);
+    });
 
   const handlePlaceOrder = async (e) => {
     e.preventDefault();
@@ -60,12 +78,48 @@ const Cart = () => {
 
     setPlacing(true);
     try {
-      const res = await axiosInstance.post('/orders', {
+      const orderRes = await axiosInstance.post('/orders', {
         deliveryAddress: address,
-        paymentMethod: 'Cash', // Razorpay wiring comes later
+        paymentMethod: 'Card',
       });
-      toast.success('Order placed successfully!');
-      navigate('/orders');
+
+      const orderId = orderRes.data?._id || orderRes.data?.id;
+      const paymentRes = await axiosInstance.post('/payments/create-razorpay-order', { orderId });
+
+      await loadRazorpayScript();
+
+      const options = {
+        key: paymentRes.data.keyId,
+        amount: paymentRes.data.amount,
+        currency: paymentRes.data.currency,
+        name: 'DairyFresh',
+        description: `Order ${orderId}`,
+        order_id: paymentRes.data.razorpayOrderId,
+        prefill: {
+          name: user?.name || '',
+          email: user?.email || '',
+          contact: user?.phone || '',
+        },
+        theme: {
+          color: '#2563eb',
+        },
+        handler: async function (response) {
+          try {
+            await axiosInstance.post('/payments/verify', {
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature,
+            });
+            toast.success('Payment successful! Order confirmed.');
+            navigate('/orders');
+          } catch (verifyError) {
+            toast.error(verifyError.response?.data?.message || 'Payment verification failed');
+          }
+        },
+      };
+
+      const rzp = new window.Razorpay(options);
+      rzp.open();
     } catch (error) {
       toast.error(error.response?.data?.message || 'Failed to place order');
     } finally {
