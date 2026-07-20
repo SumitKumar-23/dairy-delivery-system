@@ -1,6 +1,7 @@
 import { Link, Navigate } from 'react-router-dom';
 import { ArrowRight, CheckCircle2, Clock3, Headphones, ShieldCheck, Sparkles, Truck } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import logo from '../assets/logo.png';
 
 const features = [
   {
@@ -59,8 +60,8 @@ const Landing = () => {
   return (
     <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(59,130,246,0.12),_transparent_35%)] text-slate-900">
       <header className="mx-auto flex max-w-6xl items-center justify-between px-4 py-5 sm:px-6 lg:px-8">
-        <Link to="/" className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white/80 px-3 py-2 text-sm font-semibold text-blue-700 shadow-sm backdrop-blur">
-          <span className="text-lg">🥛</span>
+        <Link to="/" className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white/80 px-3 py-2 text-sm font-semibold text-blue-700 shadow-sm backdrop-blur hover:bg-white transition">
+          <img src={logo} alt="DairyFresh Logo" className="h-6 w-6 object-contain" />
           DairyFresh
         </Link>
         <div className="flex items-center gap-2">

@@ -93,15 +93,15 @@ const Subscriptions = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(59,130,246,0.12),_transparent_35%)] text-slate-900">
       <Navbar />
 
       <div className="max-w-3xl mx-auto px-4 py-6">
-        <div className="flex justify-between items-center mb-4">
-          <h1 className="text-xl font-bold text-gray-800">Your Subscriptions</h1>
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-2xl font-bold tracking-tight text-slate-800">Your Subscriptions</h1>
           <button
             onClick={() => setShowForm(!showForm)}
-            className="bg-blue-600 text-white text-sm px-4 py-2 rounded-lg font-medium"
+            className="bg-blue-600 hover:bg-blue-700 transition text-white text-sm px-5 py-2.5 rounded-full font-semibold shadow-sm"
           >
             {showForm ? 'Cancel' : '+ New Subscription'}
           </button>
@@ -109,7 +109,7 @@ const Subscriptions = () => {
 
         {/* Create Form */}
         {showForm && (
-          <form onSubmit={handleCreate} className="bg-white rounded-xl p-5 shadow-sm mb-6 space-y-3">
+          <form onSubmit={handleCreate} className="bg-white/80 backdrop-blur-xl border border-white/60 rounded-[24px] p-6 shadow-sm mb-8 space-y-4">
             <select
               required
               value={form.productId}
@@ -196,7 +196,7 @@ const Subscriptions = () => {
             <button
               type="submit"
               disabled={creating}
-              className="w-full bg-blue-600 text-white py-2 rounded-lg font-medium disabled:opacity-50"
+              className="w-full bg-blue-600 hover:bg-blue-700 transition text-white py-3 rounded-2xl font-semibold disabled:opacity-50 mt-2"
             >
               {creating ? 'Creating...' : 'Create Subscription'}
             </button>
@@ -205,21 +205,23 @@ const Subscriptions = () => {
 
         {/* Subscription List */}
         {loading ? (
-          <p className="text-gray-400">Loading...</p>
+          <p className="text-slate-400">Loading...</p>
         ) : subscriptions.length === 0 ? (
-          <p className="text-gray-400">No subscriptions yet.</p>
+          <div className="bg-white/80 backdrop-blur-xl border border-white/60 rounded-[28px] p-12 text-center shadow-sm">
+            <p className="text-lg font-medium text-slate-600">No subscriptions yet.</p>
+          </div>
         ) : (
-          <div className="space-y-3">
+          <div className="space-y-4">
             {subscriptions.map((sub) => (
-              <div key={sub._id} className="bg-white rounded-xl p-4 shadow-sm">
-                <div className="flex justify-between items-start mb-2">
+              <div key={sub._id} className="bg-white/80 backdrop-blur-md border border-white/60 rounded-[24px] p-5 shadow-sm transition hover:shadow-md">
+                <div className="flex justify-between items-start mb-3">
                   <div>
-                    <p className="font-medium text-gray-800 text-sm">{sub.product.name}</p>
-                    <p className="text-xs text-gray-400">
-                      {sub.quantity} × {sub.product.unit} · {sub.frequency.replace('_', ' ')} · {sub.deliveryTime}
+                    <p className="font-semibold text-slate-800 text-base">{sub.product.name}</p>
+                    <p className="text-sm font-medium text-slate-500 mt-0.5">
+                      {sub.quantity} × {sub.product.unit} <span className="text-slate-300 mx-1">|</span> {sub.frequency.replace('_', ' ')} <span className="text-slate-300 mx-1">|</span> {sub.deliveryTime}
                     </p>
                   </div>
-                  <span className={`text-xs px-2 py-0.5 rounded-full capitalize ${statusColor[sub.status]}`}>
+                  <span className={`text-xs px-3 py-1 border border-current/20 rounded-full capitalize font-semibold ${statusColor[sub.status]}`}>
                     {sub.status}
                   </span>
                 </div>

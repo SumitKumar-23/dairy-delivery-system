@@ -1,5 +1,18 @@
 import toast from 'react-hot-toast';
 import axiosInstance from '../utils/axiosInstance';
+import logo from '../assets/logo.png';
+
+const CATEGORY_ICONS = {
+  'Milk': '🥛',
+  'Curd': '🥣',
+  'Paneer': '🧀',
+  'Butter': '🧈',
+  'Cheese': '🧀',
+  'Ghee': '🍯',
+  'Cream': '🍦',
+  'Yogurt': '🍧',
+  'Flavored Milk': '🧃',
+};
 
 const ProductCard = ({ product, onCartUpdate }) => {
   const handleAddToCart = async () => {
@@ -15,8 +28,14 @@ const ProductCard = ({ product, onCartUpdate }) => {
 
   return (
     <div className="group flex h-full flex-col rounded-[24px] border border-slate-200/80 bg-white/85 p-4 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-blue-200 hover:shadow-lg">
-      <div className="mb-3 flex h-28 items-center justify-center rounded-[20px] bg-gradient-to-br from-blue-50 via-sky-50 to-indigo-50 text-4xl shadow-inner">
-        🥛
+      <div className="mb-3 flex h-32 items-center justify-center rounded-[20px] bg-gradient-to-br from-blue-50 via-sky-50 to-indigo-50 text-4xl shadow-inner relative overflow-hidden">
+        {product.image ? (
+          <img src={product.image} alt={product.name} className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" />
+        ) : (
+          <div className="flex flex-col items-center justify-center opacity-90 transition-transform duration-300 group-hover:scale-110 drop-shadow-sm">
+            <span className="text-5xl">{CATEGORY_ICONS[product.category] || '🥛'}</span>
+          </div>
+        )}
       </div>
       <div className="mb-2 flex items-center justify-between text-[11px]">
         <span className="rounded-full bg-amber-50 px-2.5 py-1 font-semibold text-amber-700">

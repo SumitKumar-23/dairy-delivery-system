@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { ShoppingCart, User, LogOut, Bell, LifeBuoy } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import axiosInstance from '../utils/axiosInstance';
+import logo from '../assets/logo.png';
 
 const Navbar = () => {
   const { user, logout } = useAuth();
@@ -66,8 +67,8 @@ const Navbar = () => {
   return (
     <nav className="sticky top-0 z-20 border-b border-slate-200/70 bg-white/80 backdrop-blur-xl">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
-        <Link to="/" className="flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50/80 px-3 py-2 text-blue-700 shadow-sm">
-          <span className="text-lg">🥛</span>
+        <Link to="/" className="flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50/80 px-3 py-2 text-blue-700 shadow-sm transition hover:bg-blue-100">
+          <img src={logo} alt="DairyFresh Logo" className="h-6 w-6 object-contain" />
           <span className="text-base font-semibold tracking-tight">DairyFresh</span>
         </Link>
 

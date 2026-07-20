@@ -79,7 +79,7 @@ const VendorOrders = () => {
                   {nextStatus && (
                     <button
                       onClick={() => updateStatus(order._id, nextStatus)}
-                      className="text-xs bg-blue-600 text-white px-3 py-1.5 rounded-lg font-medium capitalize"
+                      className="cursor-pointer text-xs bg-blue-600 text-white px-3 py-1.5 rounded-lg font-medium capitalize transition hover:bg-blue-700"
                     >
                       Mark as {nextStatus.replace('_', ' ')}
                     </button>

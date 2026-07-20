@@ -99,6 +99,7 @@ function App() {
             <Route path="users" element={<AdminUsers />} />
             <Route path="products" element={<AdminProducts />} />
             <Route path="orders" element={<AdminOrders />} />
+            <Route path="tickets" element={<AdminTickets />} />
           </Route>
           <Route
             path="/support"
@@ -108,7 +109,6 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route path="tickets" element={<AdminTickets />} />
         </Routes>
       </AuthProvider>
     </BrowserRouter>

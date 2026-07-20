@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import { ArrowLeft } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import logo from '../assets/logo.png';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -34,8 +36,15 @@ const Login = () => {
         <div className="absolute -right-10 -top-10 h-24 w-24 rounded-full bg-blue-100 blur-3xl" />
         <div className="absolute -bottom-8 -left-8 h-24 w-24 rounded-full bg-sky-100 blur-3xl" />
         <div className="relative">
-          <div className="mb-4 inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700">
-            🥛 DairyFresh
+          <div className="mb-6 flex items-center justify-between">
+            <Link to="/" className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 transition hover:bg-blue-100 hover:shadow-sm">
+              <img src={logo} alt="DairyFresh Logo" className="h-5 w-5 object-contain" />
+              DairyFresh
+            </Link>
+            <Link to="/" className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-sm font-medium text-slate-500 transition hover:bg-slate-100 hover:text-slate-700">
+              <ArrowLeft size={16} />
+              Back
+            </Link>
           </div>
           <h1 className="text-2xl font-semibold tracking-tight text-slate-800">Welcome back</h1>
           <p className="mb-6 mt-1 text-sm text-slate-500">Login to continue your dairy delivery experience.</p>

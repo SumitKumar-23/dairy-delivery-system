@@ -51,44 +51,48 @@ const Orders = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(59,130,246,0.12),_transparent_35%)] text-slate-900">
       <Navbar />
       <div className="max-w-4xl mx-auto px-4 py-6">
-        <h1 className="text-xl font-bold text-gray-800 mb-4">Your Orders</h1>
+        <h1 className="text-2xl font-bold tracking-tight text-slate-800 mb-6">Your Orders</h1>
 
         {loading ? (
-          <p className="text-gray-400">Loading...</p>
+          <p className="text-slate-400">Loading...</p>
         ) : orders.length === 0 ? (
-          <p className="text-gray-400">No orders yet.</p>
+          <div className="bg-white/80 backdrop-blur-xl border border-white/60 rounded-[28px] p-12 text-center shadow-sm">
+            <p className="text-lg font-medium text-slate-600">No orders yet.</p>
+          </div>
         ) : (
-          <div className="space-y-3">
+          <div className="space-y-4">
             {orders.map((order) => (
-              <div key={order._id} className="bg-white rounded-xl p-4 shadow-sm">
-                <div className="flex justify-between items-center mb-2">
-                  <span className="text-xs text-gray-400">
+              <div key={order._id} className="bg-white/80 backdrop-blur-md border border-white/60 rounded-[24px] p-5 shadow-sm transition hover:shadow-md">
+                <div className="flex justify-between items-center mb-3">
+                  <span className="text-sm font-medium text-slate-500">
                     {new Date(order.createdAt).toLocaleDateString()}
                   </span>
-                  <span className="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full capitalize">
+                  <span className="text-xs bg-blue-50 border border-blue-100 text-blue-600 px-3 py-1 rounded-full capitalize font-medium">
                     {order.orderStatus.replace('_', ' ')}
                   </span>
                 </div>
 
-                {order.items.map((item) => (
-                  <div key={item._id} className="flex justify-between items-center py-1">
-                    <p className="text-sm text-gray-700">
-                      {item.name} × {item.quantity}
-                    </p>
-                    {order.orderStatus === 'delivered' && (
-                      <button
-                        onClick={() => openReviewForm(order._id, item.product, item.name)}
-                        className="text-xs text-blue-600 font-medium flex items-center gap-1"
-                      >
-                        <Star size={12} /> Rate
-                      </button>
-                    )}
-                  </div>
-                ))}
-                <p className="text-right font-semibold text-gray-800 mt-2">₹{order.totalAmount}</p>
+                <div className="space-y-1">
+                  {order.items.map((item) => (
+                    <div key={item._id} className="flex justify-between items-center py-1.5 border-b border-slate-100 last:border-0">
+                      <p className="text-sm font-medium text-slate-700">
+                        {item.name} <span className="text-slate-400 font-normal">× {item.quantity}</span>
+                      </p>
+                      {order.orderStatus === 'delivered' && (
+                        <button
+                          onClick={() => openReviewForm(order._id, item.product, item.name)}
+                          className="text-xs bg-amber-50 text-amber-600 hover:bg-amber-100 px-2 py-1 rounded-md font-medium flex items-center gap-1 transition"
+                        >
+                          <Star size={12} className="fill-amber-600" /> Rate
+                        </button>
+                      )}
+                    </div>
+                  ))}
+                </div>
+                <p className="text-right font-bold text-slate-900 mt-3 text-lg">₹{order.totalAmount}</p>
               </div>
             ))}
           </div>
